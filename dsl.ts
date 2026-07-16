@@ -317,10 +317,15 @@ function compileQuestSection(blocks: RawBlock[]): Quest {
       fail_conditions: fail.length ? fail : null,
     } as QuestStage;
   });
+  const reqAttr = attr(meta.lines, 'requires');
+  const reqFlags = reqAttr ? reqAttr.split(/[,\s]+/).map(s => s.trim()).filter(Boolean) : [];
+  const autoConditions = reqFlags.length
+    ? reqFlags.map(f => ({ inline: { type: 'player_flag', target_id: f, operator: 'has', value: true } as any }))
+    : (start && start !== 'manual' ? [parseCondition(start)] : null);
   return {
     id: slug(meta.title), name: meta.title, description: attr(meta.lines, 'Description') || attr(meta.lines, 'desc') || '',
     visibility: { conditions: null },
-    auto_start: { conditions: start && start !== 'manual' ? [parseCondition(start)] : null },
+    auto_start: { conditions: autoConditions },
     stages,
   };
 }

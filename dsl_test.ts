@@ -179,6 +179,7 @@ check('gated action visibility condition', (acts['go_down_a_dark_path']?.visibil
 check('gain action money_delta', acts['work_from_home']?.effects.money_delta === 10);
 check('bare flag condition = player_flag', (parseCondition('julie_awakened = true') as any).inline.type === 'player_flag');
 check('npc_stat condition (>=)', (parseCondition('tina:affection >= 30') as any).inline.type === 'npc_stat');
+check('quest requires: attr -> auto_start player_flag', (function(){ const s = parseSource('= QUESTS\nMarcie Arc 1\n# requires: julie_arc_2_done\nx\n# desc: d\n# complete: a = true\n'); const q = compileBlocks(s).quests[0]; return ((q.auto_start.conditions||[])[0]?.inline as any)?.target_id === 'julie_arc_2_done'; })());
 // grammar is plain JSON, read directly
 const barMood = JSON.parse(fs.readFileSync(path.join(tmp, 'grammar', 'bar_mood.json'), 'utf-8'));
 const tinaLine = JSON.parse(fs.readFileSync(path.join(tmp, 'grammar', 'tina_line.json'), 'utf-8'));
