@@ -1,379 +1,297 @@
-# Game Engine Codebase Reference
+# FRESH Engine — Codebase Reference
 
-## Condition Types & Field Names
-
-The evaluator supports these condition types. Format: inline conditions go in `conditions` arrays.
-
-### player_stat
-Check player stat value.
-```json
-{ "type": "player_stat", "target_id": "intelligence", "operator": "gte", "value": 2 }
-```
-- `target_id`: stat name (intelligence, charisma, physique)
-- `operator`: gte, lte, gt, lt, eq, neq, has, not_has
-- `value`: numeric threshold
-
-### npc_stat
-Check NPC affection or corruption.
-```json
-{ "type": "npc_stat", "target_id": "alex:affection", "operator": "gte", "value": 30 }
-```
-- `target_id`: `npc_id:stat_name` (must include colon)
-- Valid stat names: affection, corruption
-- `operator`: gte, lte, gt, lt, eq, neq, has, not_has
-
-### npc_flag
-Check an NPC-specific flag.
-```json
-{ "type": "npc_flag", "target_id": "alex:met_player" }
-```
-- `target_id`: `npc_id:flag_id` (must include colon)
-
-### npc_trait
-Check NPC trait tier.
-```json
-{ "type": "npc_trait", "target_id": "alex:deviousness", "operator": "gte", "value": 1 }
-```
-- `target_id`: `npc_id:trait_id` (must include colon)
-
-### player_skill
-Check player skill unlock/tier.
-```json
-{ "type": "player_skill", "target_id": "persuasion", "operator": "gte", "value": 1 }
-```
-- `target_id`: skill name
-
-### player_flag
-Check player-level flag.
-```json
-{ "type": "player_flag", "target_id": "flag_name" }
-```
-- `target_id`: flag name
-
-### player_inventory
-Check if player has item.
-```json
-{ "type": "player_inventory", "target_id": "mysterious_key" }
-```
-- `target_id`: item id
-
-### global_flag
-Check world-level flag.
-```json
-{ "type": "global_flag", "target_id": "alex_corrupted" }
-```
-- `target_id`: flag name
-- No operator needed for has check
-
-### day_count
-Check current day number.
-```json
-{ "type": "day_count", "operator": "gte", "value": 5 }
-```
-- `operator`: gte, lte, gt, lt, eq
-- `value`: day number
-
-### world_phase
-Check world phase.
-```json
-{ "type": "world_phase", "operator": "gte", "value": 2 }
-```
-
-### quest_state
-Check quest status.
-```json
-{ "type": "quest_state", "target_id": "quest_id", "operator": "eq", "value": "active" }
-```
-
-### location_unlocked
-Check if location is unlocked.
-```json
-{ "type": "location_unlocked", "target_id": "secret_club" }
-```
+Stat-gated state-machine engine. Conditions are the spine; everything else
+(REST cycle, actions, events, dialogue, quests, save/load) reads or
+writes GameState through the StateManager. Console-first: a REPL drives it.
 
 ---
 
-## StateManager Methods
+## Condition Types
 
-All state mutations go through StateManager. Never mutate state directly.
+Inline conditions live in `conditions` arrays as `{ inline: { ... } }`
+or bare `{ ... }`. The evaluator supports:
 
-### Global Flags
-```typescript
-setGlobalFlag(flag_id: string, value: ConditionValue): void
-setGlobalFlags(flags: Record<string, ConditionValue>): void
-getGlobalFlag(flag_id: string): ConditionValue
-```
+| Type | Shape | Notes |
+|------|-------|-------|
+| `player_stat` | `{ target_id, operator, value }` | stat name (intelligence/charisma/physique) |
+| `npc_stat` | `{ target_id: "npc:stat", operator, value }` | stat ∈ affection/corruption |
+| `npc_flag` | `{ target_id: "npc:flag", operator: "has", value: true }` | flag gate needs operator |
+| `npc_trait` | `{ target_id: "npc:trait", operator, value }` | trait tier |
+| `player_skill` | `{ target_id, operator, value }` | skill name |
+| `player_flag` | `{ target_id, operator: "has", value: true }` | flag gate needs operator |
+| `player_inventory` | `{ target_id: item_id }` | has-item check |
+| `global_flag` | `{ target_id, operator: "has", value: true }` | **needs operator in REST/unlock path** (see Gotchas) |
+| `day_count` | `{ operator, value }` | day number |
+| `world_phase` | `{ operator, value }` | phase index |
+| `quest_state` | `{ target_id, operator, value }` | active/completed/etc. |
+| `location_unlocked` | `{ target_id }` | location id |
 
-### Player Stats
-```typescript
-bumpPlayerStat(stat_id: string, delta: number): StateChange[]
-```
-
-### Economy
-```typescript
-adjustBalance(delta: number): boolean  // Returns false if insufficient funds
-payWeeklyIncome(): void
-```
-
-### Inventory
-```typescript
-addItemToInventory(item_id: string, item_type: 'consumable' | 'gift', quantity?: number): void
-addKeyItem(item_id: string): void
-removeKeyItem(item_id: string): void
-grantItem(item_id: string, quantity: number, item_type: 'consumable' | 'key_item' | 'gift'): void  // Resolves type from item registry; used by ActionEffects.item_grants
-consumeItem(item_id: string, quantity: number, item_type: 'consumable' | 'key_item' | 'gift'): boolean  // Returns false if insufficient
-```
-
-### NPC State
-```typescript
-setNPCState(npc_id: string, affection?: number, corruption?: number, traits?: any, flags?: any): void
-getNPC(npc_id: string): NPC
-getNPCFlag(npc_id: string, flag_id: string): ConditionValue
-```
-
-### Location Management
-```typescript
-setLocation(location_id: string): void  // Sets current location, updates previous
-unlockLocation(location_id: string): void
-isLocationUnlocked(location_id: string): boolean
-```
-
-### Daily/Phase Management
-```typescript
-advanceDay(): void
-setRested(): void
-clearRested(): void
-advanceWorldPhase(): void
-resetAllDailyCounters(): void
-```
-
-### Notifications
-```typescript
-queueNotification(text: string): void
-flushNotifications(): string[]
-```
+Operators: `gte, lte, gt, lt, eq, neq, has, not_has`.
+`has`/`not_has` read a boolean flag; pass `value: true`.
 
 ---
 
-## Location JSON Structure
+## StateManager (mutate ONLY through this)
+
+| Area | Methods |
+|------|---------|
+| Global flags | `setGlobalFlag(id, v)`, `setGlobalFlags(map)`, `getGlobalFlag(id)` |
+| Player stats | `bumpPlayerStat(id, delta): StateChange[]` |
+| Economy | `adjustBalance(delta): boolean` (false = insufficient), `payWeeklyIncome()` |
+| Inventory | `addItemToInventory(id, type, qty?)`, `addKeyItem(id)`, `removeKeyItem(id)`, `grantItem(id, qty, type)` (type inferred from item registry; used by `item_grants`), `consumeItem(id, qty, type): boolean` (false = insufficient) |
+| NPCs | `setNPCState(id, {affection, corruption, traits, flags})`, `getNPC(id)`, `getNPCFlag(id, flag)` |
+| Locations | `setLocation(id)` (updates previous), `unlockLocation(id)`, `unlockShop(id)`, `isLocationUnlocked(id)` |
+| Phase/Day | `advanceDay()`, `setRested()`, `clearRested()`, `advanceWorldPhase()`, `resetAllDailyCounters()` |
+| Notifications | `queueNotification(text)`, `flushNotifications(): string[]` |
+
+Never mutate `state` directly.
+
+---
+
+## Location JSON (`data/locations/<id>.json`)
 
 ```json
 {
-  "id": "location_id",
-  "name": "Display Name",
-  "description": "Long description",
-  "parent_id": null,
-  "region": "residential|urban|outdoor",
-  "children": [],
-  "unlock": {
-    "unlocked": true,
-    "conditions": [
-      { "inline": { /* condition */ } }
-    ]
-  },
-  "availability": {
-    "available": true,
-    "conditions": null
-  },
+  "id": "local_bar", "name": "Local Bar",
+  "parent_id": "downtown", "region": "urban", "children": [],
+  "unlock": { "unlocked": true, "conditions": null },
+  "availability": { "available": true, "conditions": null },
+  "description": "Low light, worn vinyl stools...",
   "contents": {
-    "npcs": ["npc_id1", "npc_id2"],
-    "shops": ["shop_id"],
-    "quests": [],
-    "actions": ["action_id1", "action_id2"]
+    "npcs": [{ "npc_id": "tina", "conditions": null }],
+    "shops": [], "quests": [], "actions": []
   },
-  "random_events": [],
-  "assets": {
-    "image": null,
-    "ambient_description": "Atmospheric text"
-  }
+  "random_events": [], "assets": { "image": null, "ambient_description": "" }
 }
 ```
 
-**Key Point:** `contents.npcs` tells the console which NPC interactions to show at a location.
+- `parent_id: null` = world-map root.
+- `contents.npcs` drives which NPC interactions show at a location
+  (NOT hardcoded into `description` — presence is dynamic at runtime).
+- `unlock.conditions` are checked during the REST cycle (Step 3).
 
 ---
 
-## Action JSON Structure
+## Action JSON (`data/actions/<id>.json`)
 
 ```json
 {
-  "id": "action_id",
-  "name": "Display Name",
-  "description": "Short description",
+  "id": "action_id", "name": "Display Name",
   "action_type": "rest|job|location_action|npc_interaction",
-  "context": {
-    "type": "location|npc",
-    "target_id": "location_id|npc_id"
-  },
-  "visibility": {
-    "conditions": [
-      { "inline": { /* condition */ } }
-    ]
-  },
+  "context": { "type": "location|npc", "target_id": "loc|npc" },
+  "visibility": { "conditions": [{ "inline": { "type": "npc_stat", "target_id": "alex:affection", "operator": "gte", "value": 30 } }] },
   "availability": {
-    "caps": {
-      "daily": { "enabled": true, "max": 1, "current": 0, "when_exhausted": "grey_out" },
-      "lifetime": { "enabled": false, "max": null, "current": 0, "when_exhausted": "grey_out" }
-    },
-    "prerequisites": {
-      "money": 20,
-      "items": [{ "item_id": "mysterious_key", "consumed_on_use": false }],
-      "flags": null
-    }
+    "caps": { "daily": { "enabled": true, "max": 1, "current": 0, "when_exhausted": "grey_out" },
+            "lifetime": { "enabled": false, "max": null, "current": 0, "when_exhausted": "grey_out" } },
+    "prerequisites": { "money": 20, "items": [{ "item_id": "key", "consumed_on_use": false }], "flags": null }
   },
   "effects": {
-    "text": "Action flavor text",
-    "text_key": null,
-    "scene_id": null,
+    "text": "Flavor text", "text_key": null, "scene_id": null,
     "stat_bumps": { "stat_id": "intelligence", "value": 1 },
-    "npc_effects": {
-      "npc_id": "alex",
-      "affection": 2,
-      "corruption": 1,
-      "trait_bumps": null,
-      "flags": { "met_player": true }
-    },
+    "npc_effects": { "npc_id": "alex", "affection": 2, "corruption": 1, "trait_bumps": null, "flags": { "met": true } },
     "money_delta": 10,
-    "player_flags": { "flag_name": true },
-    "global_emissions": null,
-    "item_grants": [{ "item_id": "mysterious_key", "quantity": 1 }],
+    "player_flags": { "flag": true },
+    "global_emissions": [{ "flag": "vault_unlocked", "value": true }],
+    "item_grants": [{ "item_id": "key", "quantity": 1 }],
     "item_consumes": null,
     "quest_triggers": null,
-    "event_id": null,
-    "event_probability": null
+    "event_id": null, "event_probability": null
   },
   "assets": { "icon": null }
 }
 ```
 
-**Context Types:**
-- `"type": "location"` — appears at that location (visible if location has action in contents.actions)
-- `"type": "npc"` — appears when at location with that NPC (location.contents.npcs includes npc_id)
+- `visibility` = shown at all? `availability` = can execute?
+- **Money cost lives in `prerequisites.money`** (auto-spent on exec).
+  Do NOT also set negative `money_delta` — that double-charges.
+  Use `money_delta` only for gains (sell) / non-prereq costs.
+- `item_grants` / `item_consumes` are arrays; type resolved from the item registry.
+- `event_id` (+ `event_probability`) **chains into a follow-up event** (see Event Chaining).
 
-**Visibility vs Availability:**
-- **Visibility**: Condition determines if action is shown at all
-- **Availability**: If visible, prerequisite determines if it can be executed
-
----
-
-## Console Command Structure
-
-### Navigation
-- `0E`, `1E`, etc. — Travel to exit by number
-- Exits shown are from `unlocked_locations` minus current location
-
-### Actions
-- `0`, `1`, etc. — Execute action by number
-- Actions shown are location actions + NPC actions for NPCs at current location
-
-### Special Commands
-- `status` — Show player state
-- `rest` — Force rest action
-- `help` — Show command list
-- `quit` — Exit game
-- `talk <npc_id>` — Start a dialogue with an NPC (e.g., `talk alex`)
-- `save [slot]` — Save game to a named slot (default slot if omitted)
-- `load [slot]` — Load a saved game from a named slot
-- `saves` — List available save slots
+### Execution flow
+1. Visibility check → hidden if fail.
+2. Availability: money ≥ prereq, items owned, daily cap not exhausted → else greyed.
+3. Execute effects in order: stat bumps → npc changes → money delta →
+   player flags → global emissions → item grants/consumes → quest triggers →
+   **event trigger** (if `event_id` set).
 
 ---
 
-## Rest Cycle Flow
+## Dialogue (`data/dialogues/<id>.json`)
 
-Executes when player takes rest action. Steps in order:
+A graph of nodes for one NPC. Player picks responses; nodes can
+auto-route to another node based on world state before showing choices.
 
-1. **Guard Check**: Ensure not already rested today
-2. **Phase Advancement**: Check if world phase conditions met
-3. **Location Unlocking**: Evaluate location.unlock.conditions
-4. **NPC Breakthroughs**: Check affection/corruption thresholds and trait advancement
-5. **Daily Counter Reset**: Set all action caps to 0
-6. **Day Advancement**: Increment day count
-7. **Weekly Income**: Pay if day % 7 == 0
-8. **Notification Flush**: Queue morning messages
+```json
+{
+  "id": "tina_poc", "npc_id": "tina", "root_node_id": "greet",
+  "nodes": {
+    "greet": {
+      "id": "greet", "text": "...", "speaker": "Tina",
+      "routes": [{ "conditions": [{ "inline": { "type": "player_flag", "target_id": "knows_rumor", "operator": "has", "value": true } }], "target_node_id": "greet_knowing" }],
+      "choices": [
+        { "text": "Ask about the vault.", "prerequisites": null,
+          "effects": { "text": null, "text_key": null, "scene_id": null, "stat_bumps": null,
+            "npc_effects": null, "money_delta": null, "player_flags": { "met": true },
+            "global_emissions": null, "item_grants": [{ "item_id": "key", "quantity": 1 }],
+            "item_consumes": null, "quest_triggers": null, "event_id": "vault_event", "event_probability": 1 },
+          "next_node_id": null }
+      ]
+    },
+    "greet_knowing": { "id": "greet_knowing", "text": "...", "speaker": "Tina", "routes": null, "choices": [] }
+  }
+}
+```
+
+API (`dialogue.ts`):
+- `enterNode(dialogue, nodeId, state, evaluator)` → `{ node, available_responses }`
+  (resolves conditional `routes` first; first matching route wins).
+- `resolveDialogueChoice(node, choiceIndex, stateManager, evaluator)` →
+  applies the choice's `effects` (via a synthetic action, same path as events)
+  and returns `next_node_id` (null = end conversation).
+
+**Breadth/precedence:** a node may have many `routes` + choices; the
+first condition-matching route redirects; choices are filtered by `prerequisites`.
 
 ---
 
-## Action Execution Flow
+## Events + Chaining (`data/events/<id>.json`)
 
-1. **Visibility Check**: Does condition pass?
-   - If no — action not shown
-   - If yes — continue
-2. **Availability Check**: Do prerequisites pass?
-   - Money sufficient?
-   - Items owned?
-   - Daily cap not exhausted?
-   - If any fail — action shown as grey (unavailable)
-3. **Execute**: Apply all effects in order
-   - Stat bumps
-   - NPC changes (affection, corruption, flags)
-   - Money delta
-   - Player flags
-   - Global emissions
+```json
+{ "id": "vault_event", "text": "A hidden passage responds.",
+  "choices": [{ "text": "Step through.", "prerequisites": null,
+    "effects": { "text": null, "text_key": null, "scene_id": null, "stat_bumps": null,
+      "npc_effects": null, "money_delta": null, "player_flags": null,
+      "global_emissions": [{ "flag": "vault_unlocked", "value": true }],
+      "item_grants": null, "item_consumes": null, "quest_triggers": null,
+      "event_id": null, "event_probability": null } }] }
+```
+
+API (`events.ts`):
+- `loadEvent(events, id)`, `getEventWithAvailableChoices(events, id, state, evaluator)`,
+  `resolveEventChoice(event, choiceIndex, stateManager, evaluator)`.
+- **Chaining:** any `ActionEffects` (from an action, dialogue choice, or
+  event choice) may carry `event_id` + `event_probability`.
+  `evaluateActionEventTrigger(effects)` returns the chained event id (or null).
+  `event_probability: 0` is valid (never fires) — resolved with `?? 1.0`,
+  so 0 is respected, not treated as unset.
+
+### Vertical-slice integration (proven by poc_branching_mystery)
+`talk` → dialogue choice grants item + emits flag + sets `event_id`
+→ event choice emits a global unlock flag
+→ REST cycle reads `location.unlock.conditions` → unlocks the location.
+All four systems compose through the StateManager.
 
 ---
 
-## Common Patterns
+## Quests (`data/quests` via `state.quests`)
 
-### Affection-Gated Action
-Visible when NPC affection >= threshold.
-```json
-"visibility": {
-  "conditions": [
-    { "inline": { "type": "npc_stat", "target_id": "alex:affection", "operator": "gte", "value": 30 } }
-  ]
-}
-```
-
-### Stat-Gated Action
-Visible when player stat >= threshold.
-```json
-"visibility": {
-  "conditions": [
-    { "inline": { "type": "player_stat", "target_id": "intelligence", "operator": "gte", "value": 2 } }
-  ]
-}
-```
-
-### Money-Gated Action
-Available (but visible) when player has enough money.
-```json
-"availability": {
-  "prerequisites": { "money": 50, "items": null, "flags": null }
-}
-```
-
-### Day-Based Location Unlock
-Location unlocks on specific day.
-```json
-"unlock": {
-  "unlocked": false,
-  "conditions": [
-    { "inline": { "type": "day_count", "operator": "gte", "value": 5 } }
-  ]
-}
-```
-
-### Flag-Based Location Unlock
-Location unlocks when flag is set.
-```json
-"unlock": {
-  "unlocked": false,
-  "conditions": [
-    { "inline": { "type": "global_flag", "target_id": "alex_corrupted" } }
-  ]
-}
-```
+`quest.ts` → `QuestManager`:
+- `evaluateDuringRestCycle(stateManager, evaluator)` runs during REST:
+  auto-starts quests whose `auto_start.conditions` pass, then advances
+  stages whose `completion_conditions` are met.
+- A quest = ordered `stages[]`; each stage has `completion_conditions`
+  (null on the final stage = auto-completes once reached).
+- **One stage resolves per REST cycle** — a 3-stage quest takes ≥3
+  nights to fully complete (reaching final stage and completing it are
+  separate cycles).
+- `initiateQuest(id)`, `getQuestStatus(id)` for direct control.
 
 ---
 
-## Important Notes
+## Random Events (`random_events.ts`)
 
-- **Always use `target_id:stat_name` format** for npc_stat (e.g., `"alex:affection"`, not separate fields)
-- **NPC actions show at locations** based on `location.contents.npcs` array, not `children`
-- **`children` array** in locations is for parent-child location relationships, NOT NPCs
-- **Condition field names matter**: `target_id` not `stat_id`, `flag_id`, etc.
-- **State mutations only through StateManager** - never mutate state object directly
-- **Action caps are in Action objects**, not in state - they reset in console after rest succeeds
-- **Location unlock conditions are checked during rest cycle** (Step 3)
-- **Money cost is the `prerequisites.money` field** — it is auto-spent on execution. Do NOT also set a negative `money_delta` in effects (that double-charges). Use `money_delta` only for gains (e.g. selling) or non-prereq costs.
-- **`event_probability: 0` is valid** (means "never fires"): the resolver uses nullish coalescing (`?? 1.0`), so `0` is respected, not treated as unset.
+`evaluateLocationEvents(randomEvents, eventTriggers, state, evaluator)`
+→ `LocationEventResult { fired, resolution?, triggered_event_id? }`.
+Each event: `{ event_id, conditions, probability, trigger: 'on_visit'|'on_action',
+trigger_action_id, cooldown: { type, last_fired }, content: { text, rewards } }`.
+`applyEventRewards(resolution, stateManager)` → `RewardResult`.
+The `content.text` field is a **Tracery grammar key** (expands via `grammar.ts`);
+a missing key returns a `((key))` fallback.
+
+---
+
+## Save / Load (`save.ts`)
+
+- `saveGame(state, actions, savesDir, slot = "default")` → writes
+  `{ version, saved_at, state, action_caps }` to `saves/<slot>.json`.
+  `action_caps` is a sidecar snapshot of each action's daily/lifetime
+  `current` counters (so caps restore exactly).
+- `loadGame(slot, actions, savesDir)` → validates, re-applies `action_caps`
+  onto the live `Action[]`, returns restored `GameState`.
+- `listSaves(savesDir)` → available slots.
+- Console: `save [slot]`, `load [slot]`, `saves`.
+
+---
+
+## Console Commands
+
+| Cmd | Effect |
+|-----|--------|
+| `0E`, `1E`… | travel to exit by number (unlocked − current) |
+| `0`, `1`… | execute action by number (location + NPC actions) |
+| `talk <npc_id>` | start a dialogue (e.g. `talk tina`) |
+| `status` | show player state |
+| `rest` | force the REST cycle |
+| `save [slot]` / `load [slot]` / `saves` | save management |
+| `help` | command list |
+| `quit` | exit |
+
+---
+
+## REST Cycle (`runRestCycle`)
+
+Executes on rest. Order:
+1. Guard — already rested today? abort.
+2. World-phase advancement (conditions met?).
+3. Location unlocking (`unlock.conditions`).
+4. NPC breakthroughs (affection/corruption thresholds → trait advance).
+5. Daily counter reset (all action caps → 0).
+6. Day advance.
+7. Weekly income (day % 7 == 0).
+8. Notification flush.
+
+Quests (`QuestManager.evaluateDuringRestCycle`) run inside this pass.
+
+---
+
+## Tracery (`grammar.ts`)
+
+`expandText(key, state?)` expands a grammar rule; `getGrammar()` loads
+`grammar/*.json` (actions.json, notifications.json). Used for state-aware
+procedural flavor (event text, notifications, gossip). Missing key → `((key))`.
+
+---
+
+## Gotchas (real, surfaced by the POC suite)
+
+1. **Money — pick ONE cost path per action.** `prerequisites.money` deducts
+   if set (>0); `money_delta` deducts independently if negative. They are
+   **additive, not a replacement** — setting BOTH non-zero on one action
+   deducts both (double charge). Either path alone is fine; existing sample
+   data using `money_delta`-only works as-is. Don't mix them.
+2. **`event_probability: 0`** is valid (never fires); engine uses `?? 1.0`
+   so 0 isn't swallowed. (The legacy `eventTriggers` fallback path
+   still uses `|| 1.0` — `probability: 0` there is ignored. Use the
+   primary `event_id` path.)
+3. **Flag conditions need an `operator`** (`has`/`not_has` + `value: true`)
+   in the REST/unlock evaluation path (`applyOperator(undefined)` throws
+   otherwise). `global_flag`, `player_flag`, `npc_flag` all require it
+   when checked via `runRestCycle` location-unlock.
+4. **One quest stage per REST** — don't expect multi-stage completion
+   in a single night.
+5. **`consumeItem`** leaves a zero-qty entry behind (quirk, not a bug).
+6. **NPC presence is dynamic** — never bake `contents.npcs` into a
+   location `description`; the engine injects it at runtime.
+
+---
+
+## Verification
+
+`npm run check` (tsc --noEmit) + `npm test` (170 tests across
+evaluator/rest/actions/loader/events/dialogue/save). The 9 `poc_*.ts`
+harnesses each drive the real engine end-to-end:
+1. daily economy + REST cycle, 2. dialogue graph, 3. event chaining
+(caught the `||`→`??` 0-bug), 4. NPC axes + trait tiers,
+5. shop buy/sell + item-type inference, 6. random events + Tracery,
+7. quest multi-stage, 8. branching vertical slice, 9. dialogue routing breadth.

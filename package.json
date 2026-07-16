@@ -5,7 +5,7 @@
   "main": "console.ts",
   "scripts": {
     "start": "ts-node console.ts",
-    "test": "npm run test:evaluator && npm run test:rest && npm run test:actions && npm run test:loader && npm run test:events && npm run test:dialogue && npm run test:save",
+    "test": "npm run test:evaluator && npm run test:rest && npm run test:actions && npm run test:loader && npm run test:events && npm run test:dialogue && npm run test:save && npm run test:quest && npm run test:random",
     "test:events": "ts-node events_test.ts",
     "test:dialogue": "ts-node dialogue_test.ts",
     "test:save": "ts-node save_test.ts",
@@ -13,6 +13,8 @@
     "test:rest": "ts-node rest_test.ts",
     "test:actions": "ts-node actions_test.ts",
     "test:loader": "ts-node loader_test.ts",
+    "test:quest": "ts-node quest_test.ts",
+    "test:random": "ts-node random_events_test.ts",
     "build": "tsc",
     "check": "tsc --noEmit"
   },
