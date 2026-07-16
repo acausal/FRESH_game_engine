@@ -1,0 +1,63 @@
+{
+  "id": "park",
+  "name": "Park",
+  "description": "A pleasant park with walking paths.",
+  "parent_id": null,
+  "region": "outdoor",
+  "children": [],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": [
+      "park_jog",
+      "sara_talk"
+    ]
+  },
+  "random_events": [
+    {
+      "event_id": "park_find_coin",
+      "conditions": [
+        {
+          "inline": {
+            "type": "day_count",
+            "operator": "gte",
+            "value": 1
+          }
+        }
+      ],
+      "probability": 0.5,
+      "trigger": "on_visit",
+      "trigger_action_id": null,
+      "cooldown": {
+        "type": "per_day",
+        "last_fired": null
+      },
+      "content": {
+        "text": "You spot something glinting in the grass — a dropped coin!",
+        "rewards": {
+          "money": 5,
+          "items": null,
+          "stat_bumps": null
+        }
+      }
+    }
+  ],
+  "event_triggers": [
+    {
+      "event_id": "test_intro_event",
+      "probability": 1.0
+    }
+  ],
+  "assets": {
+    "image": null,
+    "ambient_description": "Fresh air, trees, and the sound of birds."
+  }
+}

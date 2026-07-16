@@ -1,0 +1,761 @@
+[
+  {
+    "id": "rest",
+    "name": "Rest",
+    "description": "Sleep for the night. Resets daily actions.",
+    "action_type": "rest",
+    "context": {
+      "type": "location",
+      "target_id": "home"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You turn in for the night.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": null,
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "job_work_from_home",
+    "name": "Work",
+    "description": "Put in a shift. Not exciting but the bills don't pay themselves.",
+    "action_type": "job",
+    "context": {
+      "type": "location",
+      "target_id": "home"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You work through your shift. Another day done.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": null,
+      "money_delta": 10,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "park_jog",
+    "name": "Go for a jog",
+    "description": "A run through the park. Good for clearing your head.",
+    "action_type": "location_action",
+    "context": {
+      "type": "location",
+      "target_id": "park"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You run a few laps around the park. You feel better for it.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": {
+        "stat_id": "physique",
+        "value": 1
+      },
+      "npc_effects": null,
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "sara_talk",
+    "name": "Talk to Sara",
+    "description": "Strike up a conversation.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "sara"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 3,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You chat with Sara for a while. She seems glad for the company.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": {
+        "npc_id": "sara",
+        "affection": 3,
+        "corruption": null,
+        "trait_bumps": null,
+        "flags": {
+          "met_player": true
+        }
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "alex_chat",
+    "name": "Chat with Alex",
+    "description": "Strike up a conversation with Alex at the bar.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "alex"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 2,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You chat with Alex. They're charming but sketchy.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": {
+        "npc_id": "alex",
+        "affection": 2,
+        "corruption": 1,
+        "trait_bumps": null,
+        "flags": {
+          "met_player": true
+        }
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "alex_corrupt",
+    "name": "Go Down a Dark Path",
+    "description": "Let Alex tempt you into something morally questionable. Requires affection.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "alex"
+    },
+    "visibility": {
+      "conditions": [
+        {
+          "inline": {
+            "type": "npc_stat",
+            "target_id": "alex:affection",
+            "operator": "gte",
+            "value": 30
+          }
+        }
+      ]
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You follow Alex into something dark and exciting.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": {
+        "npc_id": "alex",
+        "affection": 5,
+        "corruption": 10,
+        "trait_bumps": null,
+        "flags": null
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": [
+        {
+          "flag": "alex_corrupted",
+          "value": true
+        }
+      ],
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "jordan_chat",
+    "name": "Talk to Jordan",
+    "description": "Have an intellectual discussion with Jordan.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "jordan"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 2,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You have a stimulating conversation with Jordan.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": {
+        "stat_id": "intelligence",
+        "value": 1
+      },
+      "npc_effects": {
+        "npc_id": "jordan",
+        "affection": 3,
+        "corruption": null,
+        "trait_bumps": null,
+        "flags": {
+          "met_player": true
+        }
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "jordan_study",
+    "name": "Study Together",
+    "description": "Deep dive into research with Jordan. Requires intelligence >= 2.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "jordan"
+    },
+    "visibility": {
+      "conditions": [
+        {
+          "inline": {
+            "type": "player_stat",
+            "target_id": "intelligence",
+            "operator": "gte",
+            "value": 2
+          }
+        }
+      ]
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You delve deep into research with Jordan. Fascinating stuff.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": {
+        "stat_id": "intelligence",
+        "value": 2
+      },
+      "npc_effects": {
+        "npc_id": "jordan",
+        "affection": 4,
+        "corruption": null,
+        "trait_bumps": null,
+        "flags": null
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "morgan_approach",
+    "name": "Approach Morgan",
+    "description": "Step toward the figure in the shadows.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "morgan"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "Morgan watches you approach with an unreadable expression.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": {
+        "npc_id": "morgan",
+        "affection": 1,
+        "corruption": null,
+        "trait_bumps": null,
+        "flags": {
+          "met_player": true
+        }
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": [
+        {
+          "item_id": "mysterious_key",
+          "quantity": 1
+        }
+      ],
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "morgan_trade",
+    "name": "Make a Deal",
+    "description": "Trade with Morgan. Requires mysterious key.",
+    "action_type": "npc_interaction",
+    "context": {
+      "type": "npc",
+      "target_id": "morgan"
+    },
+    "visibility": {
+      "conditions": [
+        {
+          "inline": {
+            "type": "npc_stat",
+            "target_id": "morgan:affection",
+            "operator": "gte",
+            "value": 20
+          }
+        }
+      ]
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": [
+          {
+            "item_id": "mysterious_key",
+            "consumed_on_use": false
+          }
+        ],
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "Morgan takes the key and slides something across the table to you.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": {
+        "npc_id": "morgan",
+        "affection": 10,
+        "corruption": 5,
+        "trait_bumps": null,
+        "flags": {
+          "trusts_player": true
+        }
+      },
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "meditate",
+    "name": "Meditate",
+    "description": "Calm your mind in the hidden room. Requires day >= 5.",
+    "action_type": "location_action",
+    "context": {
+      "type": "location",
+      "target_id": "hidden_room"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 2,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You find inner peace through meditation.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": {
+        "stat_id": "charisma",
+        "value": 1
+      },
+      "npc_effects": null,
+      "money_delta": null,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "practice_skill",
+    "name": "Practice Skills",
+    "description": "Hone your abilities in secret. Costs $20.",
+    "action_type": "location_action",
+    "context": {
+      "type": "location",
+      "target_id": "hidden_room"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You practice intensively, improving your skills.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": {
+        "stat_id": "physique",
+        "value": 1
+      },
+      "npc_effects": null,
+      "money_delta": -20,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  },
+  {
+    "id": "club_indulge",
+    "name": "Indulge",
+    "description": "Enjoy the secret club. Requires alex_corrupted flag.",
+    "action_type": "location_action",
+    "context": {
+      "type": "location",
+      "target_id": "secret_club"
+    },
+    "visibility": {
+      "conditions": null
+    },
+    "availability": {
+      "caps": {
+        "daily": {
+          "enabled": true,
+          "max": 1,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        },
+        "lifetime": {
+          "enabled": false,
+          "max": null,
+          "current": 0,
+          "when_exhausted": "grey_out"
+        }
+      },
+      "prerequisites": {
+        "money": null,
+        "items": null,
+        "flags": null
+      }
+    },
+    "effects": {
+      "text": "You lose yourself in the club's exclusive pleasures.",
+      "text_key": null,
+      "scene_id": null,
+      "stat_bumps": null,
+      "npc_effects": null,
+      "money_delta": -50,
+      "player_flags": null,
+      "global_emissions": null,
+      "item_grants": null,
+      "item_consumes": null,
+      "quest_triggers": null
+    },
+    "assets": {
+      "icon": null
+    }
+  }
+]

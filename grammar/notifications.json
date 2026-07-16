@@ -1,0 +1,33 @@
+{
+  "comment_breakthroughs": "=== NPC BREAKTHROUGHS ===",
+  "npc_breakthrough": "#npc_names# #breakthrough_verb# reached #trait# level #tier#!",
+  "breakthrough_verb": ["has", "have"],
+
+  "comment_blocked": "=== BLOCKED NPCs (READY BUT CONDITIONS NOT MET) ===",
+  "npc_blocked": "#blocked_npcs# #blocked_verb# ready for something new, but the time isn't right yet...",
+  "blocked_verb": ["seems", "seem"],
+
+  "comment_phase": "=== PHASE ADVANCEMENT ===",
+  "phase_advance": "The town's corruption has advanced to #phase_name# (stage #phase_num#). #phase_flavor#",
+  "phase_flavor": [
+    "Something in the air has changed.",
+    "Whispers spread through the streets.",
+    "The darkness grows.",
+    "You feel it in your bones.",
+    "Something is shifting."
+  ],
+
+  "comment_location": "=== LOCATION UNLOCKS ===",
+  "location_unlock": "#location_name# is now accessible.",
+
+  "comment_income": "=== INCOME & DAILY RESET ===",
+  "weekly_income": "Weekly income received.",
+  "daily_reset": "#daily_reset_text#",
+  "daily_reset_text": [
+    "Daily actions have been reset.",
+    "A new day awaits.",
+    "Time to try again.",
+    "You're ready for tomorrow."
+  ]
+}
+

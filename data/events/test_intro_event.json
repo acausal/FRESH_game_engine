@@ -1,0 +1,84 @@
+{
+  "id": "test_intro_event",
+  "text": "You find a small note tucked under a bench. It reads: 'Meet me at the park if you want answers.'",
+  "choices": [
+    {
+      "text": "Go to the park",
+      "prerequisites": null,
+      "effects": {
+        "text": "You head toward the park, curiosity pulling at you.",
+        "text_key": null,
+        "scene_id": null,
+        "stat_bumps": {
+          "stat_id": "charisma",
+          "value": 1
+        },
+        "npc_effects": null,
+        "money_delta": null,
+        "player_flags": {
+          "read_mysterious_note": true
+        },
+        "global_emissions": null,
+        "item_grants": null,
+        "item_consumes": null,
+        "quest_triggers": null,
+        "event_id": null,
+        "event_probability": null
+      }
+    },
+    {
+      "text": "Ignore it",
+      "prerequisites": null,
+      "effects": {
+        "text": "You crumple the note and toss it. Probably nothing.",
+        "text_key": null,
+        "scene_id": null,
+        "stat_bumps": {
+          "stat_id": "intelligence",
+          "value": 1
+        },
+        "npc_effects": null,
+        "money_delta": null,
+        "player_flags": {
+          "ignored_mysterious_note": true
+        },
+        "global_emissions": null,
+        "item_grants": null,
+        "item_consumes": null,
+        "quest_triggers": null,
+        "event_id": null,
+        "event_probability": null
+      }
+    },
+    {
+      "text": "Burn the note (requires intelligence >= 2)",
+      "prerequisites": [
+        {
+          "inline": {
+            "type": "player_stat",
+            "target_id": "intelligence",
+            "operator": "gte",
+            "value": 2
+          }
+        }
+      ],
+      "effects": {
+        "text": "You set the note alight with a cheap lighter. Ashes to ashes.",
+        "text_key": null,
+        "scene_id": null,
+        "stat_bumps": null,
+        "npc_effects": null,
+        "money_delta": null,
+        "player_flags": {
+          "burned_mysterious_note": true
+        },
+        "global_emissions": null,
+        "item_grants": null,
+        "item_consumes": null,
+        "quest_triggers": null,
+        "event_id": null,
+        "event_probability": null
+      }
+    }
+  ]
+}

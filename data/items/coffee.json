@@ -1,0 +1,24 @@
+{
+  "id": "coffee",
+  "name": "Coffee",
+  "description": "Strong black coffee. Wakes you right up.",
+  "item_type": "consumable",
+  "tags": null,
+  "gift": null,
+  "consumable": {
+    "effect": {
+      "stat_bumps": [
+        {
+          "stat_id": "intellect",
+          "value": 1,
+          "temporary": true
+        }
+      ],
+      "flavor_text": "You sip the strong black coffee. It's bitter but invigorating."
+    }
+  },
+  "key_item": null,
+  "assets": {
+    "image": null
+  }
+}

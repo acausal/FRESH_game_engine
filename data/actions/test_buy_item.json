@@ -1,0 +1,55 @@
+{
+  "id": "buy_energy_drink_store",
+  "name": "Buy Energy Drink",
+  "description": "Purchase an energy drink from the tavern shop.",
+  "action_type": "buy_item",
+  "shop_id": "tavern_shop",
+  "context": {
+    "type": "location",
+    "target_id": "bar"
+  },
+  "visibility": {
+    "conditions": null
+  },
+  "availability": {
+    "caps": {
+      "daily": {
+        "enabled": false,
+        "max": null,
+        "current": 0,
+        "when_exhausted": "hide"
+      },
+      "lifetime": {
+        "enabled": false,
+        "max": null,
+        "current": 0,
+        "when_exhausted": "hide"
+      }
+    },
+    "prerequisites": {
+      "money": 5,
+      "items": null,
+      "flags": null
+    }
+  },
+  "effects": {
+    "text": "You buy an energy drink for $5.",
+    "scene_id": null,
+    "stat_bumps": null,
+    "npc_effects": null,
+    "money_delta": null,
+    "player_flags": null,
+    "global_emissions": null,
+    "item_grants": [
+      {
+        "item_id": "energy_drink",
+        "quantity": 1
+      }
+    ],
+    "item_consumes": null,
+    "quest_triggers": null
+  },
+  "assets": {
+    "icon": null
+  }
+}

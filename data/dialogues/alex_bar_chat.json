@@ -1,0 +1,208 @@
+{
+  "id": "alex_bar_chat",
+  "npc_id": "alex",
+  "root_node_id": "greeting",
+  "nodes": {
+    "greeting": {
+      "id": "greeting",
+      "text": "Alex leans against the bar, swirling a drink. \"Well, look who it is.\"",
+      "speaker": null,
+      "routes": [
+        {
+          "conditions": [
+            { "inline": { "type": "npc_stat", "target_id": "alex:corruption", "operator": "gte", "value": 50 } }
+          ],
+          "target_node_id": "dark_greeting"
+        }
+      ],
+      "choices": [
+        {
+          "text": "\"Hey Alex. How's it going?\"",
+          "prerequisites": null,
+          "effects": {
+            "text": "Alex shrugs. \"Same old. This town doesn't change.\"",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": { "npc_id": "alex", "affection": 2, "corruption": null, "trait_bumps": null, "flags": { "met_player": true } },
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": "smalltalk"
+        },
+        {
+          "text": "\"You look like you've got a story to tell.\" (charisma >= 2)",
+          "prerequisites": [
+            { "inline": { "type": "player_stat", "target_id": "charisma", "operator": "gte", "value": 2 } }
+          ],
+          "effects": {
+            "text": "Alex's eyes narrow with interest. \"Maybe I do. Maybe you're the type who can handle it.\"",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": { "npc_id": "alex", "affection": 3, "corruption": 2, "trait_bumps": null, "flags": null },
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": "the_offer"
+        },
+        {
+          "text": "\"Never mind.\" (leave)",
+          "prerequisites": null,
+          "effects": {
+            "text": "\"Suit yourself,\" Alex mutters.",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": null,
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": null
+        }
+      ]
+    },
+    "dark_greeting": {
+      "id": "dark_greeting",
+      "text": "Alex doesn't look up. A cold smile plays at the corner of their mouth. \"You again. You've changed. I like it.\"",
+      "speaker": null,
+      "routes": null,
+      "choices": [
+        {
+          "text": "\"We understand each other now.\"",
+          "prerequisites": null,
+          "effects": {
+            "text": "\"That we do,\" Alex says, finally meeting your eyes.",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": { "npc_id": "alex", "affection": 5, "corruption": 3, "trait_bumps": null, "flags": null },
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": "the_offer"
+        },
+        {
+          "text": "\"I should go.\"",
+          "prerequisites": null,
+          "effects": {
+            "text": "Alex chuckles softly as you turn away.",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": null,
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": null
+        }
+      ]
+    },
+    "smalltalk": {
+      "id": "smalltalk",
+      "text": "\"So what brings you around here anyway?\" Alex asks.",
+      "speaker": null,
+      "routes": null,
+      "choices": [
+        {
+          "text": "\"Just passing through.\"",
+          "prerequisites": null,
+          "effects": {
+            "text": "\"Aren't we all,\" Alex says, raising the glass.",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": null,
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": null
+        }
+      ]
+    },
+    "the_offer": {
+      "id": "the_offer",
+      "text": "Alex lowers their voice. \"There's something I could use a hand with. Discreet work. Pays well. You in?\"",
+      "speaker": null,
+      "routes": null,
+      "choices": [
+        {
+          "text": "\"I'm listening.\"",
+          "prerequisites": null,
+          "effects": {
+            "text": "\"Good. I'll be in touch.\" Alex slips you a folded note.",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": { "npc_id": "alex", "affection": 2, "corruption": 4, "trait_bumps": null, "flags": null },
+            "money_delta": null,
+            "player_flags": { "heard_alex_offer": true },
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": null
+        },
+        {
+          "text": "\"Not interested in trouble.\"",
+          "prerequisites": null,
+          "effects": {
+            "text": "\"Shame. You'd be good at it.\" Alex turns back to the drink.",
+            "text_key": null,
+            "scene_id": null,
+            "stat_bumps": null,
+            "npc_effects": { "npc_id": "alex", "affection": -2, "corruption": null, "trait_bumps": null, "flags": null },
+            "money_delta": null,
+            "player_flags": null,
+            "global_emissions": null,
+            "item_grants": null,
+            "item_consumes": null,
+            "quest_triggers": null,
+            "event_id": null,
+            "event_probability": null
+          },
+          "next_node_id": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "id": "test_work_tracery",
+  "name": "Work (Grammar Test)",
+  "description": "Test action using Tracery text_key",
+  "action_type": "npc_interaction",
+  "context": {
+    "type": "location",
+    "target_id": "home"
+  },
+  "visibility": {
+    "conditions": null
+  },
+  "availability": {
+    "caps": {
+      "daily": {
+        "enabled": true,
+        "max": 5,
+        "current": 0
+      },
+      "lifetime": {
+        "enabled": false,
+        "max": null,
+        "current": 0
+      }
+    },
+    "prerequisites": {
+      "money": null,
+      "items": null,
+      "flags": null
+    }
+  },
+  "effects": {
+    "text": null,
+    "text_key": "job_work",
+    "scene_id": null,
+    "stat_bumps": {
+      "stat_id": "intelligence",
+      "value": 1
+    },
+    "npc_effects": null,
+    "money_delta": 50,
+    "player_flags": null,
+    "global_emissions": null,
+    "item_grants": null,
+    "item_consumes": null,
+    "quest_triggers": null
+  },
+  "assets": {
+    "icon": null
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "bedroom",
+  "name": "Bedroom",
+  "description": "Your bedroom. Time for sleep.",
+  "parent_id": "home",
+  "region": "residential",
+  "children": [],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": []
+  },
+  "random_events": [],
+  "assets": {
+    "image": null,
+    "ambient_description": "It's dark and quiet."
+  }
+}

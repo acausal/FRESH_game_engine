@@ -1,0 +1,50 @@
+{
+  "id": "morgan",
+  "name": "Morgan",
+  "description": "A mysterious figure. Good for testing item prerequisites and flag gating.",
+  "locations": [
+    {
+      "location_id": "alley",
+      "conditions": null
+    }
+  ],
+  "affection": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "corruption": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "traits": {
+    "mystique": {
+      "unlocked": true,
+      "unlock_conditions": [],
+      "current_tier": 0,
+      "tiers": [
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": [
+          { "inline": { "type": "npc_stat", "target_id": "morgan:affection", "operator": "gte", "value": 50 } }
+        ] }
+      ]
+    }
+  },
+  "daily_counters": {
+    "meetings": { "current": 0, "max": 1 }
+  },
+  "flags": {
+    "met_player": false,
+    "trusts_player": false
+  },
+  "emits": [
+    {
+      "condition": { "inline": { "type": "npc_flag", "target_id": "morgan:trusts_player", "value": true } },
+      "global_flag": "morgan_trusts_you",
+      "value": true
+    }
+  ],
+  "assets": {
+    "portrait": null,
+    "scenes": {}
+  }
+}

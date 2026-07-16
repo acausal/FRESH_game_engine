@@ -1,0 +1,29 @@
+{
+  "id": "bar",
+  "name": "The Bar",
+  "description": "A dimly lit establishment where questionable deals happen.",
+  "parent_id": null,
+  "region": "urban",
+  "children": [],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": [
+      "alex_chat",
+      "alex_corrupt"
+    ]
+  },
+  "random_events": [],
+  "assets": {
+    "image": null,
+    "ambient_description": "Dimly lit, smells like alcohol and bad decisions."
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "neighborhood",
+  "name": "Neighborhood",
+  "description": "Your quiet residential neighborhood.",
+  "parent_id": null,
+  "region": "residential",
+  "children": [],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": []
+  },
+  "random_events": [],
+  "assets": {
+    "image": null,
+    "ambient_description": "Peaceful and quiet, with familiar houses."
+  }
+}

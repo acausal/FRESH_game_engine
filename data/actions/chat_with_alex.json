@@ -1,0 +1,55 @@
+{
+  "id": "chat_with_alex_start",
+  "name": "Chat with Alex",
+  "description": "Strike up a conversation with Alex.",
+  "action_type": "npc_interaction",
+  "context": {
+    "type": "npc",
+    "target_id": "alex"
+  },
+  "visibility": {
+    "conditions": null
+  },
+  "availability": {
+    "caps": {
+      "daily": {
+        "enabled": true,
+        "max": 3,
+        "current": 0,
+        "when_exhausted": "grey_out"
+      },
+      "lifetime": {
+        "enabled": false,
+        "max": null,
+        "current": 0,
+        "when_exhausted": "hide"
+      }
+    },
+    "prerequisites": {
+      "money": null,
+      "items": null,
+      "flags": null
+    }
+  },
+  "effects": {
+    "text": "You chat with Alex. They seem interested in what you have to say.",
+    "scene_id": null,
+    "stat_bumps": null,
+    "npc_effects": {
+      "npc_id": "alex",
+      "affection": 3,
+      "corruption": null,
+      "trait_bumps": null,
+      "flags": null
+    },
+    "money_delta": null,
+    "player_flags": null,
+    "global_emissions": null,
+    "item_grants": null,
+    "item_consumes": null,
+    "quest_triggers": ["meet_alex"]
+  },
+  "assets": {
+    "icon": null
+  }
+}

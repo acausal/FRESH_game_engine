@@ -1,0 +1,53 @@
+{
+  "id": "sara",
+  "name": "Sara",
+  "description": "A friendly neighbor you've known for years.",
+  "locations": [
+    {
+      "location_id": "park",
+      "conditions": null
+    },
+    {
+      "location_id": "library",
+      "conditions": null
+    }
+  ],
+  "affection": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "corruption": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "traits": {
+    "exhibitionism": {
+      "unlocked": false,
+      "unlock_conditions": [],
+      "current_tier": 0,
+      "tiers": [
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": [
+          { "inline": { "type": "npc_stat", "target_id": "sara:affection", "operator": "gte", "value": 30 } }
+        ] }
+      ]
+    }
+  },
+  "daily_counters": {
+    "talk": { "current": 0, "max": 3 }
+  },
+  "flags": {
+    "met_player": false
+  },
+  "emits": [
+    {
+      "condition": { "inline": { "type": "npc_stat", "target_id": "sara:affection", "operator": "gte", "value": 50 } },
+      "global_flag": "sara_likes_you",
+      "value": true
+    }
+  ],
+  "assets": {
+    "portrait": "assets/sara/portrait.png",
+    "scenes": {}
+  }
+}

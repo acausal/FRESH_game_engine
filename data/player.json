@@ -1,0 +1,68 @@
+{
+  "name": "",
+  "stats": {
+    "charisma": {
+      "value": 1,
+      "max": 10,
+      "thresholds": [
+        { "value": 3, "global_flag": "player_charisma_low" },
+        { "value": 7, "global_flag": "player_charisma_high" }
+      ]
+    },
+    "intelligence": {
+      "value": 1,
+      "max": 10,
+      "thresholds": [
+        { "value": 5, "global_flag": "player_intelligence_mid" }
+      ]
+    },
+    "physique": {
+      "value": 1,
+      "max": 10,
+      "thresholds": [
+        { "value": 5, "global_flag": "player_physique_mid" }
+      ]
+    }
+  },
+  "skills": {
+    "persuasion": {
+      "unlocked": true,
+      "unlock_conditions": [],
+      "current_tier": 0,
+      "tiers": [
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": null }
+      ]
+    },
+    "deception": {
+      "unlocked": false,
+      "unlock_conditions": [
+        { "inline": { "type": "npc_stat", "target_id": "player:charisma", "operator": "gte", "value": 5 } }
+      ],
+      "current_tier": 0,
+      "tiers": [
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": null }
+      ]
+    }
+  },
+  "inventory": {
+    "consumables": {},
+    "key_items": {},
+    "gifts": {}
+  },
+  "economy": {
+    "balance": 50,
+    "weekly_income": 30,
+    "income_upgrade_cost": 150,
+    "income_max": 150
+  },
+  "daily_counters": {
+    "job": { "current": 0, "max": 1 }
+  },
+  "flags": {},
+  "assets": {
+    "portrait": "assets/player/portrait.png"
+  }
+}

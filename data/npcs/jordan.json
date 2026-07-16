@@ -1,0 +1,53 @@
+{
+  "id": "jordan",
+  "name": "Jordan",
+  "description": "An intellectual. Good for testing trait-level gating and stat checks.",
+  "locations": [
+    {
+      "location_id": "library",
+      "conditions": null
+    }
+  ],
+  "affection": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "corruption": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "traits": {
+    "brilliance": {
+      "unlocked": true,
+      "unlock_conditions": [],
+      "current_tier": 0,
+      "tiers": [
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": [
+          { "inline": { "type": "npc_stat", "target_id": "jordan:affection", "operator": "gte", "value": 40 } }
+        ] },
+        { "value": 0, "cap": 100, "advance_conditions": [
+          { "inline": { "type": "npc_stat", "target_id": "jordan:affection", "operator": "gte", "value": 80 } }
+        ] }
+      ]
+    }
+  },
+  "daily_counters": {
+    "study_sessions": { "current": 0, "max": 2 }
+  },
+  "flags": {
+    "met_player": false,
+    "learned_secret": false
+  },
+  "emits": [
+    {
+      "condition": { "inline": { "type": "npc_stat", "target_id": "jordan:affection", "operator": "gte", "value": 50 } },
+      "global_flag": "jordan_trusts_you",
+      "value": true
+    }
+  ],
+  "assets": {
+    "portrait": null,
+    "scenes": {}
+  }
+}

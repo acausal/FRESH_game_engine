@@ -1,0 +1,13 @@
+{
+  "id": "expensive_gift",
+  "name": "Expensive Gift",
+  "description": "A high-end present. Costs money to acquire.",
+  "item_type": "gift",
+  "rarity": "rare",
+  "stackable": true,
+  "affects": null,
+  "assets": {
+    "icon": null,
+    "description_detail": "Wrapped beautifully. Costs $75."
+  }
+}

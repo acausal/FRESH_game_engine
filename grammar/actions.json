@@ -1,0 +1,55 @@
+{
+  "comment_rest": "=== CORE ACTIONS ===",
+  "rest_action": "You head to bed and fall asleep.",
+
+  "comment_work": "=== WORK ACTION ===",
+  "job_work": "You work through your shift. #work_feeling#.",
+  "work_feeling": [
+    "Another day done.",
+    "The hours blur together.",
+    "At least you got paid.",
+    "Just another shift."
+  ],
+
+  "comment_exercise": "=== EXERCISE ACTION ===",
+  "park_jog": "#exercise_verb# around the park. #exercise_result#.",
+  "exercise_verb": ["You run", "You jog", "You sprint"],
+  "exercise_result": [
+    "You feel better for it.",
+    "Your muscles burn pleasantly.",
+    "Endorphins kick in.",
+    "A light sweat covers you."
+  ],
+
+  "comment_items": "=== ITEM ACTIONS ===",
+  "use_energy_drink": "You crack open the energy drink and take a long sip. #energy_effect#.",
+  "energy_effect": [
+    "A rush of clarity washes over you.",
+    "Your senses sharpen.",
+    "You feel more alert than before."
+  ],
+
+  "comment_npc": "=== NPC INTERACTIONS ===",
+  "chat_generic": "You chat with #npc_chat_mood#. #chat_outcome#.",
+  "npc_chat_mood": ["an acquaintance", "someone you know", "a familiar face"],
+  "chat_outcome": [
+    "They seem glad for the company.",
+    "The conversation flows naturally.",
+    "An awkward silence hangs briefly.",
+    "You both share a laugh."
+  ],
+
+  "comment_shopping": "=== SHOPPING ===",
+  "buy_item_success": "You make the purchase. #purchase_feeling#.",
+  "purchase_feeling": [
+    "The transaction is quick and painless.",
+    "You walk away with your goods.",
+    "Money well spent, you think."
+  ],
+
+  "comment_quest": "=== QUEST TEXT ===",
+  "quest_progress_generic": "Quest progress recorded.",
+
+  "comment_fallback": "=== FALLBACK ===",
+  "generic_action": "You take action. Something happens."
+}

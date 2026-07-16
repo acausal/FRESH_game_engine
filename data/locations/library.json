@@ -1,0 +1,30 @@
+{
+  "id": "library",
+  "name": "Library",
+  "description": "A quiet, well-stocked library filled with books and knowledge.",
+  "parent_id": null,
+  "region": "urban",
+  "children": [],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": [
+      "jordan_chat",
+      "jordan_study",
+      "sara_talk"
+    ]
+  },
+  "random_events": [],
+  "assets": {
+    "image": null,
+    "ambient_description": "Quiet, intellectual, filled with the smell of old books."
+  }
+}

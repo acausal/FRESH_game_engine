@@ -1,0 +1,29 @@
+node_modules/
+saves/
+*.log
+
+# Windows helper scripts / scratch
+*.bat
+*.docx
+
+# Stale handoff / summary docs (not part of the engine)
+HANDOFF*.md
+HANDOFF*.txt
+DELIVERY_SUMMARY.md
+ITERATION_3_SUMMARY.md
+FINAL_CHECKLIST.md
+FILE_INDEX.md
+MANIFEST.txt
+QUICK_START_WINDOWS.txt
+START_HERE.txt
+character_roster.txt
+
+# Throwaway fix scripts
+fix_actions_test*.js
+clear_cache.bat
+organize_files.bat
+
+# Editor / OS
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,77 @@
+{
+  "id": "meet_alex",
+  "name": "Meet Alex",
+  "description": "Get to know the mysterious bartender at the bar.",
+  "visibility": {
+    "conditions": null
+  },
+  "auto_start": {
+    "conditions": null
+  },
+  "stages": [
+    {
+      "id": "first_chat",
+      "description": "Strike up a conversation with Alex.",
+      "completion_conditions": [
+        {
+          "inline": {
+            "type": "npc_stat",
+            "target_id": "alex:affection",
+            "operator": "gte",
+            "value": 3
+          }
+        }
+      ],
+      "on_complete": {
+        "text": "Alex seems more comfortable around you.",
+        "text_key": null,
+        "scene_id": null,
+        "stat_bumps": null,
+        "npc_effects": null,
+        "money_delta": null,
+        "player_flags": null,
+        "global_emissions": null,
+        "item_grants": null,
+        "item_consumes": null,
+        "quest_triggers": null,
+        "event_id": null,
+        "event_probability": null
+      },
+      "on_complete_event_id": null,
+      "fail_conditions": null
+    },
+    {
+      "id": "friendship",
+      "description": "Build real friendship with Alex.",
+      "completion_conditions": [
+        {
+          "inline": {
+            "type": "npc_stat",
+            "target_id": "alex:affection",
+            "operator": "gte",
+            "value": 6
+          }
+        }
+      ],
+      "on_complete": {
+        "text": "Alex now considers you a true friend.",
+        "text_key": null,
+        "scene_id": null,
+        "stat_bumps": null,
+        "npc_effects": null,
+        "money_delta": 15,
+        "player_flags": {
+          "alex_friend": true
+        },
+        "global_emissions": null,
+        "item_grants": null,
+        "item_consumes": null,
+        "quest_triggers": null,
+        "event_id": null,
+        "event_probability": null
+      },
+      "on_complete_event_id": null,
+      "fail_conditions": null
+    }
+  ]
+}

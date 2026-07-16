@@ -1,0 +1,37 @@
+{
+  "id": "hidden_room",
+  "name": "Hidden Room",
+  "description": "A secret room you discovered. Only accessible later in the week.",
+  "parent_id": "home",
+  "region": "residential",
+  "children": [],
+  "unlock": {
+    "unlocked": false,
+    "conditions": [
+      {
+        "inline": {
+          "type": "day_count",
+          "operator": "gte",
+          "value": 5
+        }
+      }
+    ]
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": [
+      "meditate",
+      "practice_skill"
+    ]
+  },
+  "random_events": [],
+  "assets": {
+    "image": null,
+    "ambient_description": "A secret space. Very peaceful."
+  }
+}

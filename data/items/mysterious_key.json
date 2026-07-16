@@ -1,0 +1,13 @@
+{
+  "id": "mysterious_key",
+  "name": "Mysterious Key",
+  "description": "A key of unknown origin. Might unlock something.",
+  "item_type": "key_item",
+  "rarity": "rare",
+  "stackable": false,
+  "affects": null,
+  "assets": {
+    "icon": null,
+    "description_detail": "An ornate key with strange markings."
+  }
+}

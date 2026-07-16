@@ -1,0 +1,53 @@
+{
+  "game_version": "0.1.0",
+  "starting_location_id": "home",
+  "world_phase": {
+    "current": 1,
+    "phases": [
+      {
+        "phase_number": 2,
+        "name": "Stirring",
+        "description": "The town begins to change. Something is different in the air.",
+        "advancement_conditions": [
+          {
+            "inline": {
+              "operator": "AND",
+              "operands": [
+                { "type": "global_flag", "target_id": "sara_corrupted", "operator": "has", "value": null },
+                { "type": "day_count", "operator": "gte", "value": 14 }
+              ]
+            }
+          }
+        ],
+        "on_advance": {
+          "global_flags": { "phase_2_active": true },
+          "notifications": ["The town's corruption has advanced to Stage 2."],
+          "unlocks": ["secret_beach", "adult_shop"]
+        }
+      },
+      {
+        "phase_number": 3,
+        "name": "Unraveling",
+        "description": "The corruption is visible everywhere now.",
+        "advancement_conditions": [
+          {
+            "inline": {
+              "operator": "AND",
+              "operands": [
+                { "type": "global_flag", "target_id": "phase_2_active", "operator": "has", "value": null },
+                { "type": "world_phase", "operator": "gte", "value": 2 }
+              ]
+            }
+          }
+        ],
+        "on_advance": {
+          "global_flags": { "phase_3_active": true },
+          "notifications": ["The town has changed beyond recognition."],
+          "unlocks": ["underground_club"]
+        }
+      }
+    ]
+  },
+  "initially_unlocked_locations": ["home", "bedroom", "neighborhood", "park", "bar", "library", "alley"],
+  "initially_unlocked_shops": []
+}

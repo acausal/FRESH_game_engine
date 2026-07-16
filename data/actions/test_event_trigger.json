@@ -1,0 +1,52 @@
+{
+  "id": "test_event_trigger",
+  "name": "Trigger Test Event",
+  "description": "A debug action that triggers an event via effects.",
+  "action_type": "location_action",
+  "context": {
+    "type": "location",
+    "target_id": "home"
+  },
+  "visibility": {
+    "conditions": null
+  },
+  "availability": {
+    "caps": {
+      "daily": {
+        "enabled": true,
+        "max": 1,
+        "current": 0,
+        "when_exhausted": "grey_out"
+      },
+      "lifetime": {
+        "enabled": false,
+        "max": null,
+        "current": 0,
+        "when_exhausted": "grey_out"
+      }
+    },
+    "prerequisites": {
+      "money": null,
+      "items": null,
+      "flags": null
+    }
+  },
+  "effects": {
+    "text": "You feel a strange compulsion to check something...",
+    "text_key": null,
+    "scene_id": null,
+    "stat_bumps": null,
+    "npc_effects": null,
+    "money_delta": null,
+    "player_flags": null,
+    "global_emissions": null,
+    "item_grants": null,
+    "item_consumes": null,
+    "quest_triggers": null,
+    "event_id": "test_intro_event",
+    "event_probability": 1.0
+  },
+  "assets": {
+    "icon": null
+  }
+}

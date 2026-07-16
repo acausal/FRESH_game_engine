@@ -1,0 +1,63 @@
+{
+  "id": "home",
+  "name": "Your Home",
+  "description": "A cozy place to rest and work.",
+  "parent_id": null,
+  "region": "residential",
+  "children": [
+    "bedroom"
+  ],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": [
+      {
+        "action_id": "rest",
+        "conditions": null
+      },
+      {
+        "action_id": "job_work_from_home",
+        "conditions": null
+      },
+      {
+        "action_id": "test_event_trigger",
+        "conditions": null
+      }
+    ]
+  },
+  "random_events": [
+    {
+      "event_id": "home_rest_bonus",
+      "conditions": null,
+      "probability": 0.5,
+      "trigger": "on_action",
+      "trigger_action_id": "rest",
+      "cooldown": {
+        "type": "per_day",
+        "last_fired": null
+      },
+      "content": {
+        "text": "You sleep especially well and wake up feeling refreshed!",
+        "rewards": {
+          "money": null,
+          "items": null,
+          "stat_bumps": {
+            "charisma": 1
+          }
+        }
+      }
+    }
+  ],
+  "assets": {
+    "image": null,
+    "ambient_description": "It's quiet here."
+  }
+}

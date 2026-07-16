@@ -1,0 +1,51 @@
+{
+  "id": "alex",
+  "name": "Alex",
+  "description": "A morally ambiguous character. Good for testing corruption mechanics.",
+  "locations": [
+    {
+      "location_id": "bar",
+      "conditions": null
+    }
+  ],
+  "affection": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "corruption": {
+    "value": 0,
+    "high_threshold": 50
+  },
+  "traits": {
+    "deviousness": {
+      "unlocked": false,
+      "unlock_conditions": [
+        { "inline": { "type": "npc_stat", "target_id": "alex:corruption", "operator": "gte", "value": 30 } }
+      ],
+      "current_tier": 0,
+      "tiers": [
+        { "value": 0, "cap": 100, "advance_conditions": null },
+        { "value": 0, "cap": 100, "advance_conditions": [
+          { "inline": { "type": "npc_stat", "target_id": "alex:corruption", "operator": "gte", "value": 60 } }
+        ] }
+      ]
+    }
+  },
+  "daily_counters": {
+    "interactions": { "current": 0, "max": 2 }
+  },
+  "flags": {
+    "met_player": false
+  },
+  "emits": [
+    {
+      "condition": { "inline": { "type": "npc_stat", "target_id": "alex:corruption", "operator": "gte", "value": 50 } },
+      "global_flag": "alex_corrupted",
+      "value": true
+    }
+  ],
+  "assets": {
+    "portrait": null,
+    "scenes": {}
+  }
+}

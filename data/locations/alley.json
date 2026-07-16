@@ -1,0 +1,29 @@
+{
+  "id": "alley",
+  "name": "Dark Alley",
+  "description": "A shadowy alley where questionable people conduct questionable business.",
+  "parent_id": null,
+  "region": "urban",
+  "children": [],
+  "unlock": {
+    "unlocked": true,
+    "conditions": null
+  },
+  "availability": {
+    "available": true,
+    "conditions": null
+  },
+  "contents": {
+    "shops": [],
+    "quests": [],
+    "actions": [
+      "morgan_approach",
+      "morgan_trade"
+    ]
+  },
+  "random_events": [],
+  "assets": {
+    "image": null,
+    "ambient_description": "Dark, mysterious, with the feeling of watching eyes."
+  }
+}

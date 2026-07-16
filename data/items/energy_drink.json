@@ -1,0 +1,17 @@
+{
+  "id": "energy_drink",
+  "name": "Energy Drink",
+  "description": "Boosts energy temporarily.",
+  "item_type": "consumable",
+  "rarity": "common",
+  "stackable": true,
+  "affects": {
+    "stat_id": "charisma",
+    "value": 2,
+    "duration": "temporary"
+  },
+  "assets": {
+    "icon": null,
+    "description_detail": "A sugary energy boost."
+  }
+}
