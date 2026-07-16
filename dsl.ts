@@ -104,8 +104,11 @@ export function parseCondition(c: string): ConditionReference {
   }
   m = c.match(/^([\w:]+)\s*(>=|<=|>|<|=|!=)\s*(.+)$/);
   if (m) {
-    const target = m[1], op = m[2], val = coerce(m[3]);
-    const type = target === 'day_count' ? 'day_count'
+    const target = m[1], op = m[2], raw = m[3], val = coerce(raw);
+    // Bare "KEY = true/false" with no colon = a player flag, not a stat read.
+    const type = (op === '=' || op === '!=') && typeof val === 'boolean'
+      ? 'player_flag'
+      : target === 'day_count' ? 'day_count'
       : target === 'world_phase' ? 'world_phase'
       : target.startsWith('quest_state') ? 'quest_state'
       : target.includes(':') ? 'npc_stat'

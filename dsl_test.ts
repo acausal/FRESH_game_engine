@@ -4,7 +4,7 @@
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
-import { parseSource, compileBlocks, emit, slug } from './dsl';
+import { parseSource, compileBlocks, emit, slug, parseCondition } from './dsl';
 import { loadNPCs, loadLocations, loadQuests, loadEvents, loadDialogues, loadActions } from './loader';
 
 const SAMPLE = `
@@ -177,6 +177,8 @@ const acts = Object.fromEntries(actsArr.map(a => [a.id, a]));
 check('actions load (npc + location + gated)', acts['talk_to_tina']?.action_type === 'npc_interaction' && acts['work_from_home']?.action_type === 'location_action' && acts['go_down_a_dark_path']?.availability.prerequisites.money === 20);
 check('gated action visibility condition', (acts['go_down_a_dark_path']?.visibility.conditions?.[0] as any)?.inline?.type === 'npc_stat');
 check('gain action money_delta', acts['work_from_home']?.effects.money_delta === 10);
+check('bare flag condition = player_flag', (parseCondition('julie_awakened = true') as any).inline.type === 'player_flag');
+check('npc_stat condition (>=)', (parseCondition('tina:affection >= 30') as any).inline.type === 'npc_stat');
 // grammar is plain JSON, read directly
 const barMood = JSON.parse(fs.readFileSync(path.join(tmp, 'grammar', 'bar_mood.json'), 'utf-8'));
 const tinaLine = JSON.parse(fs.readFileSync(path.join(tmp, 'grammar', 'tina_line.json'), 'utf-8'));
