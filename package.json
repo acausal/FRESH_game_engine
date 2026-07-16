@@ -16,7 +16,8 @@
     "test:quest": "ts-node quest_test.ts",
     "test:random": "ts-node random_events_test.ts",
     "build": "tsc",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "compile": "ts-node compile.ts"
   },
   "keywords": [
     "game-engine",
