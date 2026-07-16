@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 import { parseSource, compileBlocks, emit, slug } from './dsl';
-import { loadNPCs, loadLocations, loadQuests, loadEvents, loadDialogues } from './loader';
+import { loadNPCs, loadLocations, loadQuests, loadEvents, loadDialogues, loadActions } from './loader';
 
 const SAMPLE = `
 = NPCS
@@ -118,6 +118,29 @@ tina_line
 
 bar_cheer
 # The bar hums with easy laughter.
+
+= ACTIONS
+Talk to Tina
+# tina
+# affection: tina +3
+# text: You chat with Tina for a while. She seems glad for company.
+# notes:
+## - changes dialogue on day 3+
+
+Work from Home
+# home
+# type: location
+# money: +10
+# text: You work through your shift. Another day done.
+
+Go Down a Dark Path
+# alex
+# gate: alex:affection >= 30
+# affection: alex +5
+# corruption: alex +10
+# global_flag: alex_corrupted = true
+# money: -20
+# text: You follow Alex into something dark and exciting.
 `;
 
 function check(name: string, cond: boolean) {
@@ -149,6 +172,11 @@ check('dialogue npc_id parsed', dlg['tina_bar_chat']?.npc_id === 'tina');
 check('dialogue id = name slug (no npc_id)', dlg['tina_bar_chat']?.id === 'tina_bar_chat');
 check('dialogue route compiled', dlg['tina_bar_chat']?.nodes['greeting']?.routes?.[0]?.target_node_id === 'dark_greeting');
 check('dialogue choice next_node', dlg['tina_bar_chat']?.nodes['greeting']?.choices[0]?.next_node_id === 'small_talk');
+const actsArr = loadActions(tmp);
+const acts = Object.fromEntries(actsArr.map(a => [a.id, a]));
+check('actions load (npc + location + gated)', acts['talk_to_tina']?.action_type === 'npc_interaction' && acts['work_from_home']?.action_type === 'location_action' && acts['go_down_a_dark_path']?.availability.prerequisites.money === 20);
+check('gated action visibility condition', (acts['go_down_a_dark_path']?.visibility.conditions?.[0] as any)?.inline?.type === 'npc_stat');
+check('gain action money_delta', acts['work_from_home']?.effects.money_delta === 10);
 // grammar is plain JSON, read directly
 const barMood = JSON.parse(fs.readFileSync(path.join(tmp, 'grammar', 'bar_mood.json'), 'utf-8'));
 const tinaLine = JSON.parse(fs.readFileSync(path.join(tmp, 'grammar', 'tina_line.json'), 'utf-8'));

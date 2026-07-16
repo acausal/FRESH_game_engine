@@ -11,6 +11,7 @@ import {
   NPC, NPCLocation, NPCTrait, ActionEffects, Location, LocationEventTrigger,
   Item, ItemType, Shop, ShopInventoryItem, Quest, QuestStage, Event, EventChoice,
   Dialogue, DialogueNode, DialogueChoice, DialogueRoute, ConditionReference,
+  Action, ActionType, ActionPrerequisites,
 } from './types';
 
 // ── Tokenizing ────────────────────────────────────────────────
@@ -244,6 +245,40 @@ function compileItem(b: RawBlock): Item {
   return item;
 }
 
+function compileAction(b: RawBlock): Action {
+  const ctx = (attr(b.lines, 'context') || '').trim();
+  const forcedLoc = attr(b.lines, 'type') === 'location';
+  const action_type: ActionType = forcedLoc ? 'location_action' : 'npc_interaction';
+  // money: positive = gain (fx.money_delta), negative = cost (prerequisites.money)
+  const md = attr(b.lines, 'money');
+  const fx = parseEffects(l1(b.lines));
+  const prereq: ActionPrerequisites = { money: null, items: null, flags: null };
+  if (md !== undefined) {
+    const n = Number(md);
+    if (n < 0) prereq.money = -n;       // cost gate
+    else fx.money_delta = n;             // gain
+  }
+  const gate = attr(b.lines, 'gate');
+  const act: Action = {
+    id: slug(b.title), name: b.title, description: attr(b.lines, 'desc') || attr(b.lines, 'text') || '',
+    action_type,
+    context: { type: forcedLoc ? 'location' : 'npc', target_id: slug(ctx) },
+    visibility: { conditions: gate ? [parseCondition(gate)] : null },
+    availability: {
+      caps: {
+        daily: { enabled: true, max: 1, current: 0, when_exhausted: 'grey_out' },
+        lifetime: { enabled: false, max: null, current: 0, when_exhausted: 'grey_out' },
+      },
+      prerequisites: prereq,
+    },
+    effects: fx,
+    assets: { icon: null },
+  };
+  const n = notesBlock(b.lines);
+  if (n) (act as any)._notes = n;
+  return act;
+}
+
 function compileShop(b: RawBlock): Shop {
   const gate = attr(b.lines, 'gate');
   const inv: ShopInventoryItem[] = [];
@@ -347,18 +382,19 @@ function compileGrammar(b: RawBlock): Record<string, string | string[]> {
 
 export interface CompiledOutput {
   npcs: NPC[]; locations: Location[]; items: Item[]; shops: Shop[];
-  quests: Quest[]; events: Event[]; dialogues: Dialogue[];
+  actions: Action[]; quests: Quest[]; events: Event[]; dialogues: Dialogue[];
   grammars: Record<string, string | string[]>;
 }
 
 export function compileBlocks(sections: CategorySection[]): CompiledOutput {
   const out: CompiledOutput = {
-    npcs: [], locations: [], items: [], shops: [], quests: [], events: [], dialogues: [], grammars: {},
+    npcs: [], locations: [], items: [], shops: [], actions: [], quests: [], events: [], dialogues: [], grammars: {},
   };
   for (const s of sections) {
     switch (s.category) {
       case 'NPCS': out.npcs.push(...s.blocks.map(compileNPC)); break;
       case 'LOCATIONS': out.locations.push(...s.blocks.map(compileLocation)); break;
+      case 'ACTIONS': out.actions.push(...s.blocks.map(compileAction)); break;
       case 'ITEMS': out.items.push(...s.blocks.map(compileItem)); break;
       case 'SHOPS': out.shops.push(...s.blocks.map(compileShop)); break;
       case 'QUESTS': out.quests.push(compileQuestSection(s.blocks)); break;
@@ -384,6 +420,7 @@ export function emit(out: CompiledOutput, baseDir: string): string[] {
   out.locations.forEach(l => write('locations', l.id, l));
   out.items.forEach(i => write('items', i.id, i));
   out.shops.forEach(s => write('shops', s.id, s));
+  out.actions.forEach(a => write('actions', a.id, a));
   out.quests.forEach(q => write('quests', q.id, q));
   out.events.forEach(e => write('events', e.id, e));
   out.dialogues.forEach(d => write('dialogues', d.id, d));
