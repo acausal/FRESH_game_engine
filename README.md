@@ -1,11 +1,9 @@
 # FRESH Engine
 
-A **stat-gated state-machine game engine** for text-first / console games. Conditions
-are the spine: every gating decision (visibility, availability, unlocks, quest
-progression, dialogue routing) resolves through one evaluator. Content is plain JSON,
-loadable per-entity, and authorable in a phone-friendly DSL that compiles to that JSON.
-
-TypeScript. Console REPL runtime. No framework, no build step required (run via `ts-node`).
+A **stat-gated state-machine game engine** for text-first games. The engine is
+UI-agnostic: it exposes a plain state machine and data layer you can hook up to
+HTML, a terminal REPL, or any other frontend you choose. This repo ships a console
+REPL as a reference runtime; the engine itself has no UI assumptions.
 
 ---
 
@@ -114,8 +112,10 @@ These are deliberate gaps, documented rather than invented-around:
   linear quests = the branch). A first-class branch construct is a future engine feature.
 - **Quest fail-effects** — a failed quest flips `failed: true`; `QuestStage` has no `on_fail`
   block. Revisit if content authoring proves a need.
-- **Engine-only / no UI** — this edition ships the console REPL only. Web/headless runtimes
-  consume the engine as a library (import `types.ts` / `loader.ts`).
+- **Engine-only / UI-agnostic** — this edition ships a console REPL as a *reference*
+  runtime only. The engine has no UI assumptions; hook it to HTML or any other frontend
+  by consuming `types.ts` / `loader.ts` / `state.ts` directly. A web/headless runtime is
+  a consumer of the engine, not part of it.
 
 ---
 
