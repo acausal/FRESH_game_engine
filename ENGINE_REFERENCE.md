@@ -120,7 +120,8 @@ payWeeklyIncome(): void
 addItemToInventory(item_id: string, item_type: 'consumable' | 'gift', quantity?: number): void
 addKeyItem(item_id: string): void
 removeKeyItem(item_id: string): void
-consumeItem(item_id: string, item_type: 'consumable' | 'gift'): boolean
+grantItem(item_id: string, quantity: number, item_type: 'consumable' | 'key_item' | 'gift'): void  // Resolves type from item registry; used by ActionEffects.item_grants
+consumeItem(item_id: string, quantity: number, item_type: 'consumable' | 'key_item' | 'gift'): boolean  // Returns false if insufficient
 ```
 
 ### NPC State
@@ -161,11 +162,11 @@ flushNotifications(): string[]
   "id": "location_id",
   "name": "Display Name",
   "description": "Long description",
-  "parent_id": null,  // For sub-locations (e.g., bedroom under home)
+  "parent_id": null,
   "region": "residential|urban|outdoor",
-  "children": [],  // Sub-location IDs, NOT NPC IDs
+  "children": [],
   "unlock": {
-    "unlocked": true|false,
+    "unlocked": true,
     "conditions": [
       { "inline": { /* condition */ } }
     ]
@@ -175,7 +176,7 @@ flushNotifications(): string[]
     "conditions": null
   },
   "contents": {
-    "npcs": ["npc_id1", "npc_id2"],  // NPCs present at this location
+    "npcs": ["npc_id1", "npc_id2"],
     "shops": ["shop_id"],
     "quests": [],
     "actions": ["action_id1", "action_id2"]
@@ -215,34 +216,39 @@ flushNotifications(): string[]
       "lifetime": { "enabled": false, "max": null, "current": 0, "when_exhausted": "grey_out" }
     },
     "prerequisites": {
-      "money": 20,  // null or number
-      "items": { "item_id": true },  // null or object
-      "flags": null  // Rarely used
+      "money": 20,
+      "items": [{ "item_id": "mysterious_key", "consumed_on_use": false }],
+      "flags": null
     }
   },
   "effects": {
     "text": "Action flavor text",
+    "text_key": null,
     "scene_id": null,
-    "stat_bumps": { "stat_id": "intelligence", "value": 1 },  // null or object
+    "stat_bumps": { "stat_id": "intelligence", "value": 1 },
     "npc_effects": {
       "npc_id": "alex",
-      "affection": 2,  // null or number
-      "corruption": 1,  // null or number
+      "affection": 2,
+      "corruption": 1,
       "trait_bumps": null,
-      "flags": { "met_player": true }  // null or object
+      "flags": { "met_player": true }
     },
-    "money_delta": 10,  // null or number (negative = cost)
-    "player_flags": { "flag_name": true },  // null or object
+    "money_delta": 10,
+    "player_flags": { "flag_name": true },
     "global_emissions": null,
-    "quest_triggers": null
+    "item_grants": [{ "item_id": "mysterious_key", "quantity": 1 }],
+    "item_consumes": null,
+    "quest_triggers": null,
+    "event_id": null,
+    "event_probability": null
   },
   "assets": { "icon": null }
 }
 ```
 
 **Context Types:**
-- `"type": "location"` → appears at that location (visible if location has action in contents.actions)
-- `"type": "npc"` → appears when at location with that NPC (location.contents.npcs includes npc_id)
+- `"type": "location"` — appears at that location (visible if location has action in contents.actions)
+- `"type": "npc"` — appears when at location with that NPC (location.contents.npcs includes npc_id)
 
 **Visibility vs Availability:**
 - **Visibility**: Condition determines if action is shown at all
@@ -253,18 +259,22 @@ flushNotifications(): string[]
 ## Console Command Structure
 
 ### Navigation
-- `0E`, `1E`, etc. → Travel to exit by number
+- `0E`, `1E`, etc. — Travel to exit by number
 - Exits shown are from `unlocked_locations` minus current location
 
 ### Actions
-- `0`, `1`, etc. → Execute action by number
+- `0`, `1`, etc. — Execute action by number
 - Actions shown are location actions + NPC actions for NPCs at current location
 
 ### Special Commands
-- `status` → Show player state
-- `rest` → Force rest action
-- `help` → Show command list
-- `quit` → Exit game
+- `status` — Show player state
+- `rest` — Force rest action
+- `help` — Show command list
+- `quit` — Exit game
+- `talk <npc_id>` — Start a dialogue with an NPC (e.g., `talk alex`)
+- `save [slot]` — Save game to a named slot (default slot if omitted)
+- `load [slot]` — Load a saved game from a named slot
+- `saves` — List available save slots
 
 ---
 
@@ -286,13 +296,13 @@ Executes when player takes rest action. Steps in order:
 ## Action Execution Flow
 
 1. **Visibility Check**: Does condition pass?
-   - If no → action not shown
-   - If yes → continue
+   - If no — action not shown
+   - If yes — continue
 2. **Availability Check**: Do prerequisites pass?
    - Money sufficient?
    - Items owned?
    - Daily cap not exhausted?
-   - If any fail → action shown as grey (unavailable)
+   - If any fail — action shown as grey (unavailable)
 3. **Execute**: Apply all effects in order
    - Stat bumps
    - NPC changes (affection, corruption, flags)
@@ -365,4 +375,5 @@ Location unlocks when flag is set.
 - **State mutations only through StateManager** - never mutate state object directly
 - **Action caps are in Action objects**, not in state - they reset in console after rest succeeds
 - **Location unlock conditions are checked during rest cycle** (Step 3)
-
+- **Money cost is the `prerequisites.money` field** — it is auto-spent on execution. Do NOT also set a negative `money_delta` in effects (that double-charges). Use `money_delta` only for gains (e.g. selling) or non-prereq costs.
+- **`event_probability: 0` is valid** (means "never fires"): the resolver uses nullish coalescing (`?? 1.0`), so `0` is respected, not treated as unset.
